@@ -45,12 +45,7 @@
         background-image: radial-gradient(#fff9c4 10%, transparent 10%), radial-gradient(#fff9c4 10%, transparent 10%);
         background-size: 20px 20px;
         background-position: 0 0, 10px 10px;
-    }
-    /* ホーム画面 */
-    #home-screen {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
+        overflow-y: auto;
     }
     .cat-icon {
         font-size: 60px;
@@ -93,36 +88,29 @@
         font-size: 18px;
         color: #43a047;
     }
-    .chart-container {
-        background-color: #ffffff;
-        border: 4px solid #8d6e63;
+    
+    /* 遊び方説明ボックス */
+    .tutorial-box {
+        background-color: #fff3e0;
+        border: 3px dashed #ffb74d;
         border-radius: 10px;
         padding: 15px;
-        flex-grow: 1;
-        position: relative;
         margin-bottom: 20px;
-        box-shadow: 4px 4px 0 #d7ccc8;
+        color: #5d4037;
+        font-size: 15px;
+        line-height: 1.5;
     }
-    .chart-title {
-        font-weight: bold;
-        color: #555;
-        margin-bottom: 20px;
+    .tutorial-box h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: #e65100;
         text-align: center;
     }
-    .bars {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-around;
-        height: 120px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #eee;
+    .tutorial-box span {
+        font-size: 24px;
+        vertical-align: middle;
     }
-    .bar {
-        width: 30px;
-        background-color: #ef5350;
-        border-radius: 5px 5px 0 0;
-        transition: height 1s ease-out;
-    }
+
     .btn {
         background-color: #ef5350;
         color: white;
@@ -135,6 +123,8 @@
         box-shadow: 0 6px 0 #b71c1c;
         transition: all 0.1s;
         user-select: none;
+        margin-top: auto;
+        margin-bottom: 20px;
     }
     .btn:active {
         transform: translateY(6px);
@@ -220,23 +210,20 @@
         <div id="home-screen">
             <div class="cat-icon">🐈🐾</div>
             <div class="status-box">
-                <div class="level" id="user-level">Lv. 12 見習い魔法使い</div>
+                <div class="level" id="user-level">Lv. 16 駆け出しの戦士</div>
                 <div class="stats">
                     <div>バランス<span>S ランク</span></div>
                     <div>神経適応<span>75 %</span></div>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <div class="chart-title">📈 筋力成長トレンド</div>
-                <div class="bars">
-                    <div class="bar" style="height: 30px;"></div>
-                    <div class="bar" style="height: 50px;"></div>
-                    <div class="bar" style="height: 70px;"></div>
-                    <div class="bar" style="height: 90px;"></div>
-                    <div class="bar" style="height: 100px;"></div>
-                    <div class="bar" style="height: 120px; background-color: #ffb74d;"></div>
-                </div>
+            <div class="tutorial-box">
+                <h3>💡 トレーニングのやり方</h3>
+                <strong>① 準備:</strong> 椅子の前に立ちます 🧍<br>
+                <strong>② 運動:</strong> カウントに合わせて<br>
+                　「4秒かけて」ゆ〜っくり座ります 🪑<br>
+                <strong>③ 回復:</strong> スッと普通に立ち上がります 🧍<br>
+                ※これを繰り返すだけニャ！
             </div>
 
             <div class="btn" onclick="startWorkout()">
@@ -247,7 +234,7 @@
         <div id="workout-screen">
             <div class="cat-icon" id="cat-face" style="margin-top: 20px;">🐈</div>
             <div class="speech-bubble" id="cat-speech">
-                魔法の詠唱のように、<br>息を吐きながら下ろすニャ〜
+                椅子の前に立って準備ニャ！<br>ゆ〜っくり座っていくニャ〜！
             </div>
             
             <div class="timer-circle" id="timer">
@@ -265,7 +252,7 @@
 </div>
 
 <script>
-    let level = 12;
+    let level = 16; // 現在のレベルを引き継ぎました
 
     function startWorkout() {
         document.getElementById('home-screen').style.display = 'none';
@@ -277,7 +264,7 @@
         let speech = document.getElementById('cat-speech');
         let timer = document.getElementById('timer');
         
-        speech.innerHTML = "椅子に向かって、4秒かけて<br>ゆっくり下ろすニャ〜";
+        speech.innerHTML = "椅子の前に立って準備ニャ！<br>ゆ〜っくり座っていくニャ〜！";
         
         let count = 4;
         timer.innerText = count;
@@ -297,7 +284,7 @@
     function showPerfect() {
         let speech = document.getElementById('cat-speech');
         document.getElementById('cat-face').innerText = '😻✨';
-        speech.innerHTML = "そのペースだニャ！<br>フォームばっちりニャ！";
+        speech.innerHTML = "そのペースだニャ！<br>立ち上がって繰り返すニャ！";
         
         let perfect = document.getElementById('perfect-text');
         perfect.classList.add('show-perfect');
@@ -312,7 +299,7 @@
         document.getElementById('user-level').innerText = "Lv. " + level + " 駆け出しの戦士";
         document.getElementById('workout-screen').style.display = 'none';
         document.getElementById('home-screen').style.display = 'flex';
-        alert("🎉 レベルアップしたニャ！\n称号が「駆け出しの戦士」になったニャ！\n\n今週のトレーニング完了です！");
+        alert("🎉 レベルアップしたニャ！\n\n今週のトレーニング完了です！");
     }
 </script>
 
