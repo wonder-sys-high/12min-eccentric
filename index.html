@@ -2,63 +2,49 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>12Min Eccentric Quest</title>
 <style>
+    /* 全体のレイアウト崩れを防ぐ基本設定 */
+    * { box-sizing: border-box; }
     body {
         font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
         background-color: #fce4ec;
         margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
+        padding: 0;
     }
     .app-container {
         width: 100%;
         max-width: 400px;
-        height: 100vh;
-        max-height: 800px;
+        min-height: 100vh;
+        margin: 0 auto;
         background-color: #ffffff;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        position: relative;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
         display: flex;
         flex-direction: column;
-        overflow: hidden;
     }
     .header {
         background-color: #8d6e63;
         color: white;
-        padding: 20px;
+        padding: 15px;
         text-align: center;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
         border-bottom: 4px solid #5d4037;
     }
     .content {
         padding: 20px;
         flex-grow: 1;
-        display: flex;
-        flex-direction: column;
         background-image: radial-gradient(#fff9c4 10%, transparent 10%), radial-gradient(#fff9c4 10%, transparent 10%);
         background-size: 20px 20px;
         background-position: 0 0, 10px 10px;
-        overflow-y: auto;
     }
-    .cat-icon {
-        font-size: 60px;
-        text-align: center;
-        margin-bottom: 10px;
-        animation: float 3s ease-in-out infinite;
-    }
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-    }
-    .status-box {
+    
+    /* 共通コンポーネント（縦並びを強制） */
+    .box {
+        display: block;
+        width: 100%;
         background-color: #ffffff;
         border: 4px solid #8d6e63;
         border-radius: 10px;
@@ -66,30 +52,46 @@
         margin-bottom: 20px;
         box-shadow: 4px 4px 0 #d7ccc8;
     }
-    .level {
-        font-size: 24px;
-        font-weight: bold;
-        color: #e53935;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .stats {
-        display: flex;
-        justify-content: space-around;
-        font-size: 14px;
-        font-weight: bold;
-        color: #555;
-    }
-    .stats div {
-        text-align: center;
-    }
-    .stats span {
+    .btn {
         display: block;
+        width: 100%;
+        background-color: #ef5350;
+        color: white;
         font-size: 18px;
-        color: #43a047;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 6px 0 #b71c1c;
+        border: none;
+        margin-bottom: 15px;
+        transition: all 0.1s;
     }
+    .btn:active {
+        transform: translateY(6px);
+        box-shadow: none;
+    }
+    .btn-secondary {
+        background-color: #4fc3f7;
+        box-shadow: 0 6px 0 #0288d1;
+    }
+
+    /* 各画面の切り替え用 */
+    .screen { display: none; }
+    .active-screen { display: block; }
+
+    /* 初期テスト画面用 */
+    .test-title { color: #e53935; text-align: center; font-size: 22px; font-weight: bold; margin-top: 0; }
+    .test-text { font-size: 16px; color: #333; line-height: 1.5; margin-bottom: 20px; }
+
+    /* ホーム画面用 */
+    .cat-icon { font-size: 50px; text-align: center; margin-bottom: 10px; }
+    .level { font-size: 22px; font-weight: bold; color: #e53935; text-align: center; margin-bottom: 10px; margin-top: 0; }
+    .stats { display: flex; justify-content: space-around; font-size: 14px; font-weight: bold; color: #555; }
+    .stats div { text-align: center; }
+    .stats span { display: block; font-size: 20px; color: #43a047; margin-top: 5px; }
     
-    /* 遊び方説明ボックス */
     .tutorial-box {
         background-color: #fff3e0;
         border: 3px dashed #ffb74d;
@@ -98,122 +100,90 @@
         margin-bottom: 20px;
         color: #5d4037;
         font-size: 15px;
-        line-height: 1.5;
+        line-height: 1.6;
     }
-    .tutorial-box h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        color: #e65100;
-        text-align: center;
-    }
-    .tutorial-box span {
-        font-size: 24px;
-        vertical-align: middle;
-    }
+    .tutorial-box h3 { margin-top: 0; color: #e65100; text-align: center; }
 
-    .btn {
-        background-color: #ef5350;
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        cursor: pointer;
-        box-shadow: 0 6px 0 #b71c1c;
-        transition: all 0.1s;
-        user-select: none;
-        margin-top: auto;
-        margin-bottom: 20px;
-    }
-    .btn:active {
-        transform: translateY(6px);
-        box-shadow: none;
-    }
-
-    /* トレーニング画面 */
-    #workout-screen {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        height: 100%;
-        text-align: center;
-    }
+    /* トレーニング画面用 */
+    #workout-screen { text-align: center; }
     .speech-bubble {
         background-color: #ffffff;
         border: 4px solid #8d6e63;
         border-radius: 15px;
         padding: 15px;
-        margin: 20px;
-        font-size: 18px;
+        margin: 0 auto 20px auto;
+        font-size: 16px;
         font-weight: bold;
         color: #333;
         position: relative;
-        width: 80%;
+        width: 90%;
         box-shadow: 4px 4px 0 #d7ccc8;
-        min-height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .speech-bubble::after {
-        content: '';
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        margin-left: -10px;
-        border-width: 0 10px 15px 10px;
-        border-style: solid;
-        border-color: transparent transparent #8d6e63 transparent;
+        line-height: 1.5;
     }
     .timer-circle {
-        width: 160px;
-        height: 160px;
+        width: 140px; height: 140px;
         border-radius: 50%;
         background-color: #fff;
         border: 8px solid #ef5350;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 60px;
-        font-weight: bold;
-        color: #ef5350;
-        margin-top: 30px;
+        display: flex; justify-content: center; align-items: center;
+        font-size: 60px; font-weight: bold; color: #ef5350;
+        margin: 20px auto;
         box-shadow: 0 0 20px rgba(239, 83, 80, 0.3);
     }
     .perfect-effect {
-        position: absolute;
-        top: 50%;
-        font-size: 45px;
-        font-weight: bold;
-        color: #ffd700;
-        text-shadow: 3px 3px 0 #ff5252, -2px -2px 0 #fff;
-        opacity: 0;
-        transform: scale(0.5);
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        pointer-events: none;
+        font-size: 35px; font-weight: bold; color: #ffd700;
+        text-shadow: 2px 2px 0 #ff5252, -1px -1px 0 #fff;
+        opacity: 0; transform: scale(0.5); transition: all 0.5s;
+        margin-top: -100px; position: relative; z-index: 10;
     }
-    .show-perfect {
-        opacity: 1;
-        transform: scale(1.2) rotate(-5deg);
-    }
+    .show-perfect { opacity: 1; transform: scale(1.1) rotate(-5deg); margin-top: -10px; }
+    
+    .reset-text { text-align: center; font-size: 12px; color: #999; margin-top: 30px; text-decoration: underline; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="header">
-        12Min Eccentric Quest
-    </div>
+    <div class="header">12Min Eccentric Quest</div>
     <div class="content">
-        
-        <div id="home-screen">
+
+        <div id="test-screen-1" class="screen">
+            <div class="cat-icon">🐈🩺</div>
+            <div class="box">
+                <h2 class="test-title">初期テスト (1/2)</h2>
+                <div class="test-text">
+                    まずはバランス力をチェックするニャ！<br><br>
+                    <strong>【片足立ちテスト】</strong><br>
+                    目をあけたまま、片足で何秒立てるかやってみるニャ！
+                </div>
+                <button class="btn btn-secondary" onclick="answerQ1('S')">余裕！10秒以上できた</button>
+                <button class="btn btn-secondary" onclick="answerQ1('A')">グラグラしたけど5秒できた</button>
+                <button class="btn btn-secondary" onclick="answerQ1('B')">すぐ足をついちゃった</button>
+            </div>
+        </div>
+
+        <div id="test-screen-2" class="screen">
+            <div class="cat-icon">🐈🪑</div>
+            <div class="box">
+                <h2 class="test-title">初期テスト (2/2)</h2>
+                <div class="test-text">
+                    次は今の筋力・神経の状態を見るニャ！<br><br>
+                    <strong>【スロー座りテスト】</strong><br>
+                    椅子の前に立ち、「4秒かけて」ゆ〜っくり座る動きを3回連続でやってみてほしいニャ。
+                </div>
+                <button class="btn btn-secondary" onclick="answerQ2(10, 80)">全然余裕！プルプルしない</button>
+                <button class="btn btn-secondary" onclick="answerQ2(5, 50)">太ももが少しプルプルした</button>
+                <button class="btn btn-secondary" onclick="answerQ2(1, 20)">ドスンと座っちゃった</button>
+            </div>
+        </div>
+
+        <div id="home-screen" class="screen">
             <div class="cat-icon">🐈🐾</div>
-            <div class="status-box">
-                <div class="level" id="user-level">Lv. 16 駆け出しの戦士</div>
+            <div class="box">
+                <h2 class="level" id="user-level">Lv. 1 村人</h2>
                 <div class="stats">
-                    <div>バランス<span>S ランク</span></div>
-                    <div>神経適応<span>75 %</span></div>
+                    <div>バランス<span id="user-rank">C ランク</span></div>
+                    <div>神経適応<span id="user-neural">10 %</span></div>
                 </div>
             </div>
 
@@ -226,37 +196,90 @@
                 ※これを繰り返すだけニャ！
             </div>
 
-            <div class="btn" onclick="startWorkout()">
-                今週の冒険へ出発ニャ
-            </div>
+            <button class="btn" onclick="startWorkout()">今週の冒険へ出発ニャ</button>
+            
+            <div class="reset-text" onclick="resetData()">テストを最初からやり直す</div>
         </div>
 
-        <div id="workout-screen">
+        <div id="workout-screen" class="screen">
             <div class="cat-icon" id="cat-face" style="margin-top: 20px;">🐈</div>
             <div class="speech-bubble" id="cat-speech">
                 椅子の前に立って準備ニャ！<br>ゆ〜っくり座っていくニャ〜！
             </div>
             
-            <div class="timer-circle" id="timer">
-                4
-            </div>
+            <div class="timer-circle" id="timer">4</div>
 
             <div class="perfect-effect" id="perfect-text">PERFECT!!✨</div>
 
-            <div class="btn" id="finish-btn" style="margin-top: auto; display: none; width: 80%;" onclick="finishWorkout()">
+            <button class="btn" id="finish-btn" style="display: none; margin-top: 30px;" onclick="finishWorkout()">
                 クエスト完了ニャ！
-            </div>
+            </button>
         </div>
 
     </div>
 </div>
 
 <script>
-    let level = 16; // 現在のレベルを引き継ぎました
+    // ユーザーデータの管理
+    let userData = {
+        level: 1,
+        rank: 'C',
+        neural: 10
+    };
 
+    // 起動時の画面判定
+    window.onload = function() {
+        let savedData = localStorage.getItem('12minQuestData');
+        if (savedData) {
+            // データがあればホーム画面へ
+            userData = JSON.parse(savedData);
+            updateHomeDisplay();
+            showScreen('home-screen');
+        } else {
+            // データがなければ初期テストへ
+            showScreen('test-screen-1');
+        }
+    }
+
+    // 画面切り替え関数
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active-screen'));
+        document.getElementById(screenId).classList.add('active-screen');
+    }
+
+    // テスト1の回答
+    function answerQ1(rank) {
+        userData.rank = rank;
+        showScreen('test-screen-2');
+    }
+
+    // テスト2の回答とデータ保存
+    function answerQ2(levelBonus, neuralScore) {
+        userData.level = levelBonus;
+        userData.neural = neuralScore;
+        
+        // ブラウザにデータを保存
+        localStorage.setItem('12minQuestData', JSON.stringify(userData));
+        
+        updateHomeDisplay();
+        showScreen('home-screen');
+    }
+
+    // ホーム画面の表示更新
+    function updateHomeDisplay() {
+        let title = "村人";
+        if(userData.level >= 5) title = "見習い魔法使い";
+        if(userData.level >= 10) title = "駆け出しの戦士";
+        if(userData.level >= 20) title = "熟練の勇者";
+
+        document.getElementById('user-level').innerText = "Lv. " + userData.level + " " + title;
+        document.getElementById('user-rank').innerText = userData.rank + " ランク";
+        document.getElementById('user-neural').innerText = userData.neural + " %";
+    }
+
+    // トレーニングの開始
     function startWorkout() {
-        document.getElementById('home-screen').style.display = 'none';
-        document.getElementById('workout-screen').style.display = 'flex';
+        showScreen('workout-screen');
         document.getElementById('finish-btn').style.display = 'none';
         document.getElementById('perfect-text').classList.remove('show-perfect');
         document.getElementById('cat-face').innerText = '🐈💦';
@@ -281,10 +304,11 @@
         }, 1000);
     }
 
+    // トレーニングの成功演出
     function showPerfect() {
         let speech = document.getElementById('cat-speech');
         document.getElementById('cat-face').innerText = '😻✨';
-        speech.innerHTML = "そのペースだニャ！<br>立ち上がって繰り返すニャ！";
+        speech.innerHTML = "そのペースだニャ！<br>スッと立ち上がって繰り返すニャ！";
         
         let perfect = document.getElementById('perfect-text');
         perfect.classList.add('show-perfect');
@@ -294,12 +318,25 @@
         }, 1500);
     }
 
+    // トレーニングの完了
     function finishWorkout() {
-        level++;
-        document.getElementById('user-level').innerText = "Lv. " + level + " 駆け出しの戦士";
-        document.getElementById('workout-screen').style.display = 'none';
-        document.getElementById('home-screen').style.display = 'flex';
-        alert("🎉 レベルアップしたニャ！\n\n今週のトレーニング完了です！");
+        // レベルと神経適応度をアップして保存
+        userData.level += 1;
+        if(userData.neural < 100) userData.neural += 5;
+        
+        localStorage.setItem('12minQuestData', JSON.stringify(userData));
+        updateHomeDisplay();
+        
+        showScreen('home-screen');
+        alert("🎉 おつかれさまニャ！\nレベルアップしたニャ！\n\n今週のトレーニング完了です！");
+    }
+
+    // データの初期化（テストやり直し用）
+    function resetData() {
+        if(confirm("データを消去して初期テストからやり直しますか？")) {
+            localStorage.removeItem('12minQuestData');
+            showScreen('test-screen-1');
+        }
     }
 </script>
 
