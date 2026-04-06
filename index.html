@@ -79,7 +79,7 @@
     .test-title { color: #e53935; text-align: center; font-size: 22px; font-weight: bold; margin-top: 0; }
     .test-text { font-size: 16px; color: #333; line-height: 1.5; margin-bottom: 20px; }
 
-    .top-icon { font-size: 50px; text-align: center; margin-bottom: 10px; }
+    .cat-icon { font-size: 50px; text-align: center; margin-bottom: 10px; }
     .level { font-size: 22px; font-weight: bold; color: #e53935; text-align: center; margin-bottom: 10px; margin-top: 0; }
     .stats { display: flex; justify-content: space-around; font-size: 14px; font-weight: bold; color: #555; }
     .stats div { text-align: center; }
@@ -97,7 +97,6 @@
     }
     .tutorial-box h3 { margin-top: 0; color: #e65100; text-align: center; }
 
-    /* トレーニング画面用の新レイアウト */
     #workout-screen { text-align: center; }
     
     .progress-info {
@@ -110,18 +109,7 @@
         border: 3px solid #8d6e63;
         border-radius: 10px;
         padding: 10px 20px;
-        margin-bottom: 20px;
-    }
-
-    /* 新しいイラスト用のスタイル */
-    .workout-image-container {
-        margin: 0 auto 20px auto;
-        text-align: center;
-    }
-    .workout-img {
-        width: 220px; /* イラストを大きく表示 */
-        height: auto;
-        display: inline-block;
+        margin-bottom: 15px;
     }
 
     .speech-bubble {
@@ -129,16 +117,17 @@
         border: 4px solid #8d6e63;
         border-radius: 15px;
         padding: 15px;
-        margin: 0 auto 20px auto;
-        font-size: 16px;
+        margin: 0 auto 15px auto;
+        font-size: 18px;
         font-weight: bold;
         color: #333;
         position: relative;
         width: 90%;
         box-shadow: 4px 4px 0 #d7ccc8;
         line-height: 1.5;
-        min-height: 70px;
+        min-height: 80px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -148,15 +137,15 @@
         justify-content: center;
         align-items: center;
         gap: 30px;
-        margin: 20px auto 10px auto; /* 少し下に下げる */
+        margin: 20px auto;
     }
 
     .squat-gauge-wrapper {
-        width: 40px;
+        width: 50px;
         height: 140px;
         background-color: #eceff1;
         border: 4px solid #b0bec5;
-        border-radius: 20px;
+        border-radius: 25px;
         position: relative;
         overflow: hidden;
     }
@@ -174,7 +163,7 @@
         background-color: #fff;
         border: 8px solid #ef5350;
         display: flex; justify-content: center; align-items: center;
-        font-size: 50px; font-weight: bold; color: #ef5350;
+        font-size: 60px; font-weight: bold; color: #ef5350;
         box-shadow: 0 0 20px rgba(239, 83, 80, 0.3);
     }
 
@@ -183,10 +172,17 @@
         text-shadow: 2px 2px 0 #ff5252, -1px -1px 0 #fff;
         opacity: 0; transform: scale(0.5); transition: all 0.3s;
         margin-top: -80px; position: relative; z-index: 10;
+        pointer-events: none;
     }
     .show-perfect { opacity: 1; transform: scale(1.1) rotate(-5deg); margin-top: 10px; }
     
     .reset-text { text-align: center; font-size: 12px; color: #999; margin-top: 30px; text-decoration: underline; cursor: pointer; }
+    
+    /* 動作をわかりやすくする絵文字アイコン */
+    .action-icon {
+        font-size: 40px;
+        margin-bottom: 5px;
+    }
 </style>
 </head>
 <body>
@@ -196,11 +192,11 @@
     <div class="content">
 
         <div id="test-screen-1" class="screen">
-            <div class="top-icon">🧍🩺</div>
+            <div class="cat-icon">🐈🩺</div>
             <div class="box">
                 <h2 class="test-title">初期テスト (1/2)</h2>
                 <div class="test-text">
-                    まずはバランス力をチェックします！<br>目をあけたまま、片足で何秒立てるかやってみましょう！
+                    まずはバランス力をチェックするニャ！<br>目をあけたまま、片足で何秒立てるかやってみるニャ！
                 </div>
                 <button class="btn btn-secondary" onclick="answerQ1('S')">余裕！10秒以上できた</button>
                 <button class="btn btn-secondary" onclick="answerQ1('A')">グラグラしたけど5秒できた</button>
@@ -209,11 +205,11 @@
         </div>
 
         <div id="test-screen-2" class="screen">
-            <div class="top-icon">🪑🏋️</div>
+            <div class="cat-icon">🐈🪑</div>
             <div class="box">
                 <h2 class="test-title">初期テスト (2/2)</h2>
                 <div class="test-text">
-                    次は筋力チェックです！<br>椅子の前に立ち、「4秒かけて」ゆ〜っくり座る動きを3回連続でやってみましょう。
+                    次は筋力チェックニャ！<br>椅子の前に立ち、「4秒かけて」ゆ〜っくり座る動きを3回連続でやってみてほしいニャ。
                 </div>
                 <button class="btn btn-secondary" onclick="answerQ2(10, 80)">全然余裕！プルプルしない</button>
                 <button class="btn btn-secondary" onclick="answerQ2(5, 50)">太ももが少しプルプルした</button>
@@ -222,7 +218,7 @@
         </div>
 
         <div id="home-screen" class="screen">
-            <div class="top-icon">🏋️‍♂️✨</div>
+            <div class="cat-icon">🐈🐾</div>
             <div class="box">
                 <h2 class="level" id="user-level">Lv. 1 村人</h2>
                 <div class="stats">
@@ -239,7 +235,7 @@
                 <strong>③ 全4セット:</strong> 合計で約12分間になります！
             </div>
 
-            <button class="btn" onclick="startWorkout()">今週の冒険へ出発！</button>
+            <button class="btn" onclick="startWorkout()">今週の冒険へ出発ニャ</button>
             <div class="reset-text" onclick="resetData()">テストを最初からやり直す</div>
         </div>
 
@@ -250,13 +246,11 @@
                 <span id="rep-counter">Rep: 1 / 10</span>
             </div>
 
-            <div class="workout-image-container">
-                <img src="squat-image.png" alt="スクワットのイラスト" class="workout-img" id="workout-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div style="display:none; color:red; font-size:12px; border:1px solid red; padding:20px;">画像(squat-image.png)が見つかりません</div>
-            </div>
+            <div class="cat-icon" id="cat-face" style="margin-top: 5px;">🐈</div>
             
-            <div class="speech-bubble" id="workout-speech">
-                椅子の前に立って準備！<br>ゲージに合わせて腰を落とそう！
+            <div class="speech-bubble">
+                <div id="action-icon" class="action-icon">🧍</div>
+                <div id="cat-speech">椅子の前に立って準備ニャ！<br>ゲージに合わせて腰を落とすニャ！</div>
             </div>
             
             <div class="visual-guide-container">
@@ -273,7 +267,7 @@
             </button>
 
             <button class="btn" id="finish-btn" style="display: none; margin-top: 10px;" onclick="finishWorkout()">
-                クエスト完了！！
+                クエスト完了ニャ！
             </button>
         </div>
 
@@ -334,7 +328,9 @@
         phase = 'SQUAT';
         tickCount = 4;
         
-        document.getElementById('workout-speech').innerHTML = "1セット目スタート！<br>ゆ〜っくり座ろう！";
+        document.getElementById('cat-face').innerText = '🐈💦';
+        document.getElementById('action-icon').innerText = '🪑'; // 椅子の絵文字
+        document.getElementById('cat-speech').innerHTML = "1セット目スタート！<br>ゆ〜っくり座るニャ〜！";
         document.getElementById('squat-gauge').style.transition = 'height 1s linear';
         document.getElementById('squat-gauge').style.height = '100%';
         document.getElementById('timer').innerText = tickCount;
@@ -352,13 +348,15 @@
             document.getElementById('timer').innerText = tickCount;
 
             if (tickCount === 2) {
-                document.getElementById('workout-speech').innerHTML = "まだ半分だよ！<br>太ももで耐えるんだ！";
+                document.getElementById('cat-speech').innerHTML = "まだ半分ニャ！<br>太ももで耐えるニャ！";
             }
 
             if (tickCount <= 0) {
                 phase = 'STAND';
                 tickCount = 2; // 2秒で立つ
-                document.getElementById('workout-speech').innerHTML = "スッと立ち上がろう！";
+                document.getElementById('cat-face').innerText = '😻';
+                document.getElementById('action-icon').innerText = '🧍'; // 立つ絵文字
+                document.getElementById('cat-speech').innerHTML = "スッと立ち上がるニャ！";
                 document.getElementById('squat-gauge').style.transition = 'height 0.5s ease';
                 document.getElementById('squat-gauge').style.height = '100%';
                 document.getElementById('perfect-text').classList.add('show-perfect');
@@ -371,28 +369,30 @@
             if (tickCount <= 0) {
                 currentRep++;
                 if (currentRep > 10) {
-                    // 10回終わったらセット完了
                     if (currentSet >= 4) {
-                        // 4セットすべて完了
                         clearInterval(timerInterval);
                         document.getElementById('timer').innerText = "CLEAR";
-                        document.getElementById('workout-speech').innerHTML = "全セット完了！！<br>今週の冒険は大成功！";
+                        document.getElementById('cat-face').innerText = '👑';
+                        document.getElementById('action-icon').innerText = '🎉';
+                        document.getElementById('cat-speech').innerHTML = "全セット完了！！<br>今週の冒険は大成功ニャ！";
                         document.getElementById('finish-btn').style.display = 'block';
                     } else {
-                        // 休憩へ
                         phase = 'REST';
                         tickCount = 120; // 2分休憩
                         currentSet++;
                         updateProgressUI();
-                        document.getElementById('workout-speech').innerHTML = "ナイスファイト！<br>2分間、筋肉を休ませよう。";
+                        document.getElementById('cat-face').innerText = '🐱💤';
+                        document.getElementById('action-icon').innerText = '☕';
+                        document.getElementById('cat-speech').innerHTML = "ナイスファイト！<br>2分間、筋肉を休ませるニャ。";
                         document.getElementById('skip-rest-btn').style.display = 'block';
                     }
                 } else {
-                    // 次の回数へ
                     phase = 'SQUAT';
                     tickCount = 4;
                     updateProgressUI();
-                    document.getElementById('workout-speech').innerHTML = currentRep + "回目！<br>ゆ〜っくり座ろう！";
+                    document.getElementById('cat-face').innerText = '🐈💦';
+                    document.getElementById('action-icon').innerText = '🪑';
+                    document.getElementById('cat-speech').innerHTML = currentRep + "回目！<br>ゆ〜っくり座るニャ！";
                     document.getElementById('squat-gauge').style.transition = 'height 1s linear';
                     document.getElementById('squat-gauge').style.height = '75%';
                     document.getElementById('timer').innerText = tickCount;
@@ -416,14 +416,16 @@
         tickCount = 4;
         updateProgressUI();
         document.getElementById('skip-rest-btn').style.display = 'none';
-        document.getElementById('workout-speech').innerHTML = currentSet + "セット目スタート！<br>気合入れよう！";
+        document.getElementById('cat-face').innerText = '🐈💦';
+        document.getElementById('action-icon').innerText = '🪑';
+        document.getElementById('cat-speech').innerHTML = currentSet + "セット目スタート！<br>気合入れるニャ！";
         document.getElementById('squat-gauge').style.transition = 'height 1s linear';
         document.getElementById('squat-gauge').style.height = '100%';
         document.getElementById('timer').innerText = tickCount;
     }
 
     function skipRest() {
-        tickCount = 1; // 次の1秒で休憩を終わらせる
+        tickCount = 1;
     }
 
     function updateProgressUI() {
@@ -437,7 +439,7 @@
         localStorage.setItem('12minQuestData', JSON.stringify(userData));
         updateHomeDisplay();
         showScreen('home-screen');
-        alert("🎉 おつかれさま！\nレベルアップしたよ！\n\n今週のトレーニング完了です！");
+        alert("🎉 おつかれさまニャ！\nレベルアップしたニャ！\n\n今週のトレーニング完了です！");
     }
 
     function resetData() {
